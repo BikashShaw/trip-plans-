@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sierra Crossing — June 16–23, 2026</title>
+
+<!-- Add-to-Home-Screen (single-file: icon + manifest are generated inline at runtime) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="California 2026">
+<meta name="application-name" content="California 2026">
+<meta name="theme-color" content="#2F5A42">
+
+<style>
+  :root{
+    --paper:#EEEADC;        /* warm topo paper */
+    --paper-2:#E6E1CF;      /* card alt */
+    --card:#F6F3E9;         /* raised card */
+    --ink:#1E2E26;          /* deep pine ink */
+    --granite:#6B746B;      /* muted secondary */
+    --line:rgba(30,46,38,.16);
+    --pine:#2F5A42;         /* Day 1 — forest */
+    --bark:#B0571B;         /* Day 2 — sequoia bark */
+    --alpine:#1C7C8C;       /* Day 3 — alpine lake */
+    --sunrise:#C2693A;      /* Day 4 — Mammoth amber */
+    --mono:#5B7FA6;         /* Day 5 — Eastern Sierra */
+    --mojave:#94701A;       /* Day 6 — Mojave gold */
+    --star:#8E4196;         /* Day 7 — LA glamour */
+    --coast:#1F6FD1;        /* Day 8 — Pacific blue */
+    --focus:#1C7C8C;
+    --shadow:0 1px 0 rgba(30,46,38,.06), 0 8px 24px -16px rgba(30,46,38,.5);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* faint contour texture behind everything */
+  body::before{
+    content:"";
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      radial-gradient(120% 80% at 20% -10%, rgba(47,90,66,.06), transparent 60%),
+      radial-gradient(100% 70% at 90% 0%, rgba(28,124,140,.06), transparent 55%);
+  }
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-ligatures:none}
+  .wrap{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 18px}
+
+  a{color:var(--alpine);text-decoration:none}
+  a:hover{text-decoration:underline}
+  :focus-visible{outline:2.5px solid var(--focus);outline-offset:2px;border-radius:4px}
+
+  /* ---------- Cover ---------- */
+  .cv-cover{position:relative;width:100%;min-height:clamp(560px,94vh,1000px);overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate;background:#E9B25A;font-family:"Inter",system-ui,sans-serif}
+  .cv-cover .cv-scene{position:absolute;inset:0;z-index:0;overflow:hidden}
+  .cv-cover .cv-art{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .cv-cover .cv-layer{will-change:transform}
+  .cv-cover .cv-layer-far{transform:translateY(0)}
+  .cv-cover .cv-halftone{position:absolute;inset:0;z-index:1;pointer-events:none;background-image:radial-gradient(rgba(30,46,38,.30) 1px, transparent 1.4px);background-size:6px 6px;mix-blend-mode:multiply;opacity:.22}
+  .cv-cover .cv-fade{position:absolute;left:0;right:0;bottom:0;height:34%;z-index:2;pointer-events:none;background:linear-gradient(to bottom, rgba(238,234,220,0) 0%, rgba(238,234,220,.55) 62%, var(--paper) 100%)}
+  .cv-cover .cv-sun-wrap{transform-box:fill-box;transform-origin:1000px 300px}
+  .cv-cover .cv-sun{animation:cv-sun-pulse 7s ease-in-out infinite}
+  .cv-cover .cv-sun-halo{animation:cv-halo 7s ease-in-out infinite}
+  .cv-cover .cv-sun-rings{animation:cv-rings 9s ease-in-out infinite}
+  @keyframes cv-sun-pulse{0%,100%{opacity:1}50%{opacity:.9}}
+  @keyframes cv-halo{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:.62;transform:scale(1.05);transform-box:fill-box;transform-origin:center}}
+  @keyframes cv-rings{0%,100%{opacity:.45}50%{opacity:.68}}
+  .cv-cover .cv-glimmer{animation:cv-glimmer 5.5s ease-in-out infinite}
+  @keyframes cv-glimmer{0%,100%{opacity:.20;transform:translateX(0)}50%{opacity:.45;transform:translateX(-18px)}}
+  .cv-cover .cv-ripples{animation:cv-ripple 8s ease-in-out infinite}
+  @keyframes cv-ripple{0%,100%{opacity:.40}50%{opacity:.6}}
+  .cv-cover .cv-lockup{position:relative;z-index:5;width:100%;max-width:1100px;margin:0 auto;padding:0 clamp(20px,5vw,56px) clamp(80px,12vh,150px);text-align:left}
+  .cv-cover .cv-kicker{margin:0 0 14px;font-size:clamp(11px,1.5vw,14px);letter-spacing:.34em;text-transform:uppercase;font-weight:600;color:#3a2410}
+  .cv-cover .cv-title{margin:0;line-height:.86}
+  .cv-cover .cv-title-main{display:block;font-family:"Bricolage Grotesque","Inter",system-ui,sans-serif;font-weight:800;font-size:clamp(64px,16vw,212px);letter-spacing:-.03em;color:#FBF4DD;text-shadow:0 4px 0 rgba(30,46,38,.30), 0 calc(.5vw + 6px) 30px rgba(30,46,38,.35)}
+  .cv-cover .cv-title-sub{display:block;margin-top:clamp(6px,1.2vw,16px);font-family:"Bricolage Grotesque","Inter",system-ui,sans-serif;font-weight:600;font-size:clamp(22px,4.4vw,52px);letter-spacing:.005em;color:#1E2E26}
+  .cv-cover .cv-route{margin:clamp(18px,2.6vw,30px) 0 0;max-width:30em;font-size:clamp(11.5px,1.45vw,15px);line-height:1.75;letter-spacing:.02em;color:#22382d}
+  .cv-cover .cv-arrow{color:#B0571B;font-weight:600;padding:0 .12em}
+  .cv-cover .cv-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;margin-top:clamp(12px,1.6vw,18px);font-size:clamp(11px,1.35vw,14px);letter-spacing:.04em}
+  .cv-cover .cv-dates{color:#1E2E26;font-weight:600}
+  .cv-cover .cv-stats{color:#2f4438}
+  .cv-cover .cv-dot{width:5px;height:5px;border-radius:50%;background:#B0571B;flex:0 0 auto}
+  .cv-cover .cv-badge{position:absolute;z-index:6;top:clamp(20px,4vw,52px);right:clamp(20px,4vw,60px);width:clamp(96px,13vw,168px);height:clamp(96px,13vw,168px);filter:drop-shadow(0 6px 14px rgba(30,46,38,.28))}
+  .cv-cover .cv-badge svg{width:100%;height:100%;display:block}
+  .cv-cover .cv-badge-text{fill:#1E2E26;font-size:14px;font-weight:600;letter-spacing:.18em}
+  .cv-cover .cv-badge-spin{transform-box:fill-box;transform-origin:center;animation:cv-spin 60s linear infinite}
+  @keyframes cv-spin{to{transform:rotate(360deg)}}
+  .cv-cover .cv-scroll{position:absolute;z-index:6;left:50%;bottom:clamp(16px,3vh,30px);transform:translateX(-50%);display:inline-flex;flex-direction:column;align-items:center;gap:7px;color:#22382d;text-decoration:none;font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:600}
+  .cv-cover .cv-scroll:hover{text-decoration:none;color:#1E2E26}
+  .cv-cover .cv-chev{display:inline-flex;width:26px;height:26px;animation:cv-bob 1.9s ease-in-out infinite}
+  .cv-cover .cv-chev svg{width:100%;height:100%}
+  @keyframes cv-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+  .cv-cover .cv-lockup>*{opacity:0;transform:translateY(18px);animation:cv-rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+  .cv-cover .cv-kicker{animation-delay:.05s}
+  .cv-cover .cv-title{animation-delay:.18s}
+  .cv-cover .cv-route{animation-delay:.46s}
+  .cv-cover .cv-meta{animation-delay:.58s}
+  .cv-cover .cv-badge{animation:cv-badge-in 1s cubic-bezier(.2,.8,.2,1) .35s both}
+  .cv-cover .cv-scroll{animation:cv-scroll-rise .9s ease .9s both}
+  @keyframes cv-rise{to{opacity:1;transform:translateY(0)}}
+  @keyframes cv-scroll-rise{from{opacity:0;transform:translate(-50%,18px)}to{opacity:1;transform:translate(-50%,0)}}
+  @keyframes cv-badge-in{from{opacity:0;transform:scale(.7) rotate(-12deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+  @media (max-width:640px){.cv-cover{justify-content:flex-end}.cv-cover .cv-lockup{text-align:left}.cv-cover .cv-badge{top:18px;right:16px}}
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position:relative;z-index:1;
+    padding:30px 0 14px;
+    scroll-margin-top:12px;
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--bark);font-weight:600;margin:0 0 10px;
+  }
+  h1.title{
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-weight:800;
+    font-size:clamp(36px,9vw,62px);
+    line-height:.96;letter-spacing:-.02em;
+    margin:0;color:var(--ink);
+  }
+  /* ---------- Elevation profile (signature) ---------- */
+  .profile-card{
+    margin:20px 0 4px;background:var(--card);
+    border:1px solid var(--line);border-radius:14px;
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+  .profile-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:13px 16px 0;gap:10px;flex-wrap:wrap;
+  }
+  .profile-head h2{
+    margin:0;font-family:"Bricolage Grotesque",sans-serif;
+    font-size:15px;font-weight:600;letter-spacing:.01em;
+  }
+  .profile-head span{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--granite);letter-spacing:.04em}
+  .profile-svg{display:block;width:100%;height:auto}
+  .profile-svg text{font-family:"IBM Plex Mono",monospace;fill:var(--granite)}
+  .profile-svg .dlabel{fill:var(--ink);font-weight:600}
+  .profile-svg .pt{cursor:pointer}
+  .profile-svg .pk{fill:var(--ink);font-weight:600}
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:sticky;top:0;z-index:600;
+    background:color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+    padding:11px 0 12px;margin-top:18px;
+  }
+  .controls .inner{max-width:920px;margin:0 auto;padding:0 18px}
+  .search{position:relative;display:flex;align-items:center}
+  .search svg{position:absolute;left:13px;width:17px;height:17px;stroke:var(--granite);pointer-events:none}
+  .search input{
+    width:100%;padding:12px 40px 12px 38px;
+    font-family:"Inter",sans-serif;font-size:16px;color:var(--ink);
+    background:var(--card);border:1px solid var(--line);border-radius:11px;
+  }
+  .search input::placeholder{color:var(--granite)}
+  .search .clear{
+    position:absolute;right:8px;border:0;background:transparent;cursor:pointer;
+    color:var(--granite);font-size:20px;line-height:1;padding:6px 8px;border-radius:8px;display:none;
+  }
+  .search .clear:hover{color:var(--ink)}
+  .chips{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;align-items:center}
+  .chip{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.03em;
+    padding:6px 12px;border-radius:999px;border:1px solid var(--line);
+    background:transparent;color:var(--granite);cursor:pointer;transition:all .12s;
+  }
+  .chip:hover{border-color:var(--ink)}
+  .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .chip.d1[aria-pressed="true"]{background:var(--pine);border-color:var(--pine)}
+  .chip.d2[aria-pressed="true"]{background:var(--bark);border-color:var(--bark)}
+  .chip.d3[aria-pressed="true"]{background:var(--alpine);border-color:var(--alpine)}
+  .chip.d4[aria-pressed="true"]{background:var(--sunrise);border-color:var(--sunrise)}
+  .chip.d5[aria-pressed="true"]{background:var(--mono);border-color:var(--mono)}
+  .chip.d6[aria-pressed="true"]{background:var(--mojave);border-color:var(--mojave)}
+  .chip.d7[aria-pressed="true"]{background:var(--star);border-color:var(--star)}
+  .chip.d8[aria-pressed="true"]{background:var(--coast);border-color:var(--coast)}
+  .count{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--granite)}
+
+  /* ---------- Map ---------- */
+  .map-card{margin:18px 0 6px;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+  #map{width:100%;height:46vh;min-height:300px;max-height:560px;background:var(--paper-2)}
+  .leaflet-container{font-family:"Inter",system-ui,sans-serif}
+  .leaflet-popup-content-wrapper{border-radius:11px}
+  .leaflet-popup-content{margin:12px 14px;font-size:13.5px;line-height:1.45}
+  .offline-map{position:relative;width:100%;height:100%;overflow:hidden;background:linear-gradient(180deg,#E9E2CC 0%,#DDE7D6 54%,#D8E6E8 100%)}
+  .offline-map svg{display:block;width:100%;height:100%}
+  .offline-map .terrain{fill:none;stroke:rgba(30,46,38,.11);stroke-width:1.2}
+  .offline-map .route-line{fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .offline-map .map-marker{cursor:pointer;transition:opacity .14s, transform .14s;transform-box:fill-box;transform-origin:center}
+  .offline-map .map-marker.is-muted{opacity:.13}
+  .offline-map .map-marker.is-active{transform:scale(1.7)}
+  .offline-map .map-marker.is-visited{opacity:.58;stroke:#1E2E26;stroke-width:3px}
+  .offline-map .map-marker.is-skipped{opacity:.46;fill:var(--granite);stroke:#1E2E26;stroke-width:2.5px}
+  .offline-map .map-label{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;letter-spacing:.04em;fill:var(--ink);paint-order:stroke;stroke:#F6F3E9;stroke-width:4px;stroke-linejoin:round}
+  .offline-map .map-hint{position:absolute;left:12px;bottom:10px;max-width:min(420px,calc(100% - 24px));font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;line-height:1.45;color:var(--granite);background:color-mix(in srgb,var(--card) 88%,transparent);border:1px solid var(--line);border-radius:8px;padding:7px 9px}
+  .pop-name{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:15px;display:block;margin-bottom:2px}
+  .pop-meta{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--granite);letter-spacing:.03em}
+  .pop-note{margin:6px 0 7px;color:#374a40}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;padding:11px 16px;background:var(--card);border-top:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--granite)}
+  .legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
+
+  /* ---------- Days & stops ---------- */
+  main{padding-bottom:40px}
+  .day{margin-top:30px}
+  .day-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:9px}
+  .day-tag{
+    font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:12px;letter-spacing:.08em;
+    color:#fff;padding:3px 9px;border-radius:6px;text-transform:uppercase;
+  }
+  .d1 .day-tag,.tag-d1{background:var(--pine)}
+  .d2 .day-tag,.tag-d2{background:var(--bark)}
+  .d3 .day-tag,.tag-d3{background:var(--alpine)}
+  .d4 .day-tag,.tag-d4{background:var(--sunrise)}
+  .d5 .day-tag,.tag-d5{background:var(--mono)}
+  .d6 .day-tag,.tag-d6{background:var(--mojave)}
+  .d7 .day-tag,.tag-d7{background:var(--star)}
+  .d8 .day-tag,.tag-d8{background:var(--coast)}
+  .day-head h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(21px,5vw,28px);margin:0;letter-spacing:-.01em}
+  .day-head .when{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--granite)}
+  .day-meta{display:flex;gap:8px 18px;flex-wrap:wrap;align-items:center;margin:11px 0 4px;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--granite)}
+  .day-meta .drive b{color:var(--ink);font-weight:600}
+  .routes{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 2px}
+  .route-btn{
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+    border:1px solid var(--line);border-radius:8px;padding:6px 10px;color:var(--ink);
+    background:var(--card);display:inline-flex;gap:6px;align-items:center;
+  }
+  .route-btn:hover{border-color:var(--ink);text-decoration:none}
+  .route-btn svg{width:13px;height:13px}
+
+  ol.stops{list-style:none;margin:14px 0 0;padding:0}
+  li.stop{
+    display:grid;grid-template-columns:52px 1fr;gap:12px;
+    padding:13px 0;border-bottom:1px solid var(--line);scroll-margin-top:150px;
+  }
+  li.stop.hidden{display:none}
+  li.stop.visited .stop-name{color:var(--granite);text-decoration:line-through;text-decoration-thickness:1.5px;text-decoration-color:rgba(30,46,38,.38)}
+  li.stop.visited .stop-note{color:rgba(60,79,69,.72)}
+  li.stop.skipped .stop-name{color:var(--granite);font-style:italic}
+  li.stop.skipped .stop-note{color:rgba(60,79,69,.68)}
+  .node{
+    width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;color:#fff;margin-top:1px;
+  }
+  .d1 .node{background:var(--pine)}.d2 .node{background:var(--bark)}.d3 .node{background:var(--alpine)}
+  .d4 .node{background:var(--sunrise)}.d5 .node{background:var(--mono)}
+  .d6 .node{background:var(--mojave)}.d7 .node{background:var(--star)}.d8 .node{background:var(--coast)}
+  /* stop thumbnails — inline SVG, fully offline (no images load) */
+  .thumb{
+    position:relative;width:46px;height:46px;border-radius:12px;flex-shrink:0;margin-top:1px;
+    display:flex;align-items:center;justify-content:center;border:1px solid var(--line);
+  }
+  .thumb svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .thumb .seq{
+    position:absolute;top:-7px;left:-7px;width:19px;height:19px;border-radius:50%;
+    font-family:"IBM Plex Mono",monospace;font-size:10px;font-weight:600;color:#fff;
+    display:flex;align-items:center;justify-content:center;border:2px solid var(--paper);
+  }
+  li.stop.visited .thumb::after{
+    content:"✓";position:absolute;right:-7px;bottom:-7px;width:21px;height:21px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;background:var(--ink);color:var(--paper);
+    border:2px solid var(--paper);font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+  }
+  li.stop.skipped .thumb::after{
+    content:"S";position:absolute;right:-7px;bottom:-7px;width:21px;height:21px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;background:var(--granite);color:#fff;
+    border:2px solid var(--paper);font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;
+  }
+  .d1 .thumb{background:color-mix(in srgb,var(--pine) 14%,#fff);color:var(--pine)}
+  .d2 .thumb{background:color-mix(in srgb,var(--bark) 14%,#fff);color:var(--bark)}
+  .d3 .thumb{background:color-mix(in srgb,var(--alpine) 14%,#fff);color:var(--alpine)}
+  .d4 .thumb{background:color-mix(in srgb,var(--sunrise) 14%,#fff);color:var(--sunrise)}
+  .d5 .thumb{background:color-mix(in srgb,var(--mono) 14%,#fff);color:var(--mono)}
+  .d6 .thumb{background:color-mix(in srgb,var(--mojave) 14%,#fff);color:var(--mojave)}
+  .d7 .thumb{background:color-mix(in srgb,var(--star) 14%,#fff);color:var(--star)}
+  .d8 .thumb{background:color-mix(in srgb,var(--coast) 14%,#fff);color:var(--coast)}
+  .d1 .thumb .seq{background:var(--pine)}
+  .d2 .thumb .seq{background:var(--bark)}
+  .d3 .thumb .seq{background:var(--alpine)}
+  .d4 .thumb .seq{background:var(--sunrise)}
+  .d5 .thumb .seq{background:var(--mono)}
+  .d6 .thumb .seq{background:var(--mojave)}
+  .d7 .thumb .seq{background:var(--star)}
+  .d8 .thumb .seq{background:var(--coast)}
+  .pop-ico{display:inline-flex;width:16px;height:16px;vertical-align:-3px;margin-right:5px}
+  .pop-ico svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .stop-main{min-width:0}
+  .stop-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .stop-name{font-family:"Bricolage Grotesque",sans-serif;font-weight:600;font-size:17px;letter-spacing:-.005em}
+  .elev{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--granite);white-space:nowrap;flex-shrink:0}
+  .stop-note{color:#3c4f45;font-size:14.5px;margin:3px 0 0}
+  .stop-time{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11px;color:#fff;background:var(--granite);padding:1px 7px;border-radius:5px;margin:6px 8px 0 0}
+  .stop-links{margin-top:8px;display:flex;gap:7px;flex-wrap:wrap}
+  .slink{
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;cursor:pointer;
+    border:1px solid var(--line);background:transparent;color:var(--ink);
+    border-radius:7px;padding:5px 9px;min-height:34px;display:inline-flex;align-items:center;gap:5px;
+  }
+  .slink:hover{border-color:var(--ink);text-decoration:none}
+  .slink svg{width:12px;height:12px}
+  .visit-toggle{font-weight:600}
+  .visit-toggle[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .visit-toggle[aria-pressed="true"]:hover{border-color:var(--ink)}
+  .skip-toggle{font-weight:600}
+  .skip-toggle[aria-pressed="true"]{background:var(--granite);border-color:var(--granite);color:#fff}
+  .skip-toggle[aria-pressed="true"]:hover{border-color:var(--granite)}
+
+  .noresult{display:none;text-align:center;padding:46px 16px;color:var(--granite);font-family:"IBM Plex Mono",monospace;font-size:13px}
+  .noresult.show{display:block}
+
+  /* ---------- Field notes ---------- */
+  .notes{margin-top:36px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:20px 20px 8px}
+  .notes h2{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:21px;margin:0 0 4px}
+  .notes .sub{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--granite);letter-spacing:.04em;margin-bottom:14px}
+  .note-item{display:grid;grid-template-columns:26px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+  .note-item .ico{width:26px;height:26px;color:var(--bark)}
+  .note-item h3{font-family:"Bricolage Grotesque",sans-serif;font-size:15.5px;font-weight:600;margin:1px 0 3px}
+  .note-item p{margin:0;font-size:14.5px;color:#3c4f45}
+  .ok{color:var(--pine);font-weight:600}
+
+  footer{margin:34px 0 50px;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--granite);line-height:1.7}
+
+  @media (min-width:680px){
+    li.stop{grid-template-columns:58px 1fr;gap:16px}
+    .thumb{width:50px;height:50px}
+    .thumb svg{width:26px;height:26px}
+    #map{height:520px}
+  }
+  @media (max-width:520px){
+    .slink{min-height:42px;padding:8px 11px}
+    .stop-links .locate{order:1;flex:1 1 calc(50% - 4px);justify-content:center}
+    .stop-links a.slink{order:2;flex:1 1 calc(50% - 4px);justify-content:center}
+    .visit-toggle{order:3;flex:1 1 calc(50% - 4px);justify-content:center}
+    .skip-toggle{order:4;flex:1 1 calc(50% - 4px);justify-content:center}
+  }
+  @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<section class="cv-cover" aria-label="Trip cover">
+  <div class="cv-scene" aria-hidden="true">
+    <svg class="cv-art" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" role="img" focusable="false">
+      <title>Vintage national-park poster of the Sierra Nevada at golden hour</title>
+      <defs>
+        <clipPath id="cvLakeClip"><rect x="0" y="612" width="1440" height="288"/></clipPath>
+        <clipPath id="cvSkyClip"><rect x="0" y="0" width="1440" height="640"/></clipPath>
+      </defs>
+      <g clip-path="url(#cvSkyClip)">
+        <rect x="0" y="0" width="1440" height="640" fill="#E9B25A"/>
+        <rect x="0" y="0" width="1440" height="150" fill="#C2693A"/>
+        <rect x="0" y="150" width="1440" height="70" fill="#D07B3C"/>
+        <rect x="0" y="220" width="1440" height="60" fill="#DC9445"/>
+        <rect x="0" y="280" width="1440" height="64" fill="#E6A94E"/>
+        <rect x="0" y="344" width="1440" height="90" fill="#EFC067"/>
+        <rect x="0" y="434" width="1440" height="206" fill="#F3D182"/>
+        <g class="cv-sun-wrap">
+          <circle class="cv-sun-halo" cx="1000" cy="300" r="210" fill="#F2C863" opacity="0.45"/>
+          <circle class="cv-sun" cx="1000" cy="300" r="132" fill="#F6E3A1"/>
+          <g class="cv-sun-rings" stroke="#C2693A" stroke-width="7" fill="none" opacity="0.55">
+            <line x1="720" y1="232" x2="1280" y2="232"/>
+            <line x1="700" y1="276" x2="1300" y2="276"/>
+            <line x1="700" y1="324" x2="1300" y2="324"/>
+            <line x1="720" y1="368" x2="1280" y2="368"/>
+          </g>
+        </g>
+        <g fill="#F3D182" opacity="0.6">
+          <rect x="120" y="190" width="300" height="16" rx="8"/>
+          <rect x="60" y="232" width="200" height="14" rx="7"/>
+          <rect x="300" y="120" width="160" height="12" rx="6"/>
+        </g>
+      </g>
+      <g class="cv-layer cv-layer-far">
+        <polygon points="-60,520 240,300 470,520" fill="#D98A4E"/>
+        <polygon points="320,520 620,330 900,520" fill="#CE7E45"/>
+        <polygon points="760,520 1060,290 1380,520" fill="#D98A4E"/>
+        <polygon points="1180,520 1440,360 1500,520" fill="#CE7E45"/>
+      </g>
+      <g class="cv-layer cv-layer-mid">
+        <polygon points="-80,560 180,360 430,560" fill="#3A8A95"/>
+        <polygon points="300,560 600,340 880,560" fill="#2F7E8A"/>
+        <polygon points="540,560 760,400 980,560" fill="#48969F"/>
+        <polygon points="820,560 1140,320 1460,560" fill="#2F7E8A"/>
+        <polygon points="600,340 552,400 648,400" fill="#EDE7D2"/>
+        <polygon points="1140,320 1090,382 1190,382" fill="#EDE7D2"/>
+        <polygon points="180,360 138,412 222,412" fill="#EDE7D2"/>
+      </g>
+      <g class="cv-layer cv-layer-near">
+        <polygon points="-100,612 200,440 520,612" fill="#B0571B"/>
+        <polygon points="360,612 700,420 1040,612" fill="#9C4D17"/>
+        <polygon points="900,612 1220,450 1520,612" fill="#B0571B"/>
+        <polygon points="700,420 654,478 746,478" fill="#E9B25A"/>
+        <polygon points="200,440 160,492 240,492" fill="#E9B25A"/>
+      </g>
+      <g class="cv-layer cv-layer-fore">
+        <polygon points="-120,612 1560,612 1560,540 1200,470 980,560 760,468 540,560 300,470 80,560 -120,500" fill="#2F5A42"/>
+        <g fill="#234835">
+          <polygon points="140,560 110,560 125,500"/>
+          <polygon points="160,560 124,560 142,486"/>
+          <polygon points="320,560 290,560 305,506"/>
+          <polygon points="345,560 305,560 325,478"/>
+          <polygon points="560,560 530,560 545,504"/>
+          <polygon points="585,560 545,560 565,476"/>
+          <polygon points="780,560 750,560 765,502"/>
+          <polygon points="805,560 765,560 785,474"/>
+          <polygon points="1000,560 970,560 985,506"/>
+          <polygon points="1025,560 985,560 1005,478"/>
+          <polygon points="1220,560 1190,560 1205,502"/>
+          <polygon points="1245,560 1205,560 1225,472"/>
+        </g>
+      </g>
+      <rect x="0" y="612" width="1440" height="288" fill="#1C7C8C"/>
+      <g clip-path="url(#cvLakeClip)" class="cv-reflection">
+        <g opacity="0.5">
+          <polygon points="-80,664 180,864 430,664" fill="#3A8A95"/>
+          <polygon points="300,664 600,884 880,664" fill="#2F7E8A"/>
+          <polygon points="820,664 1140,904 1460,664" fill="#2F7E8A"/>
+        </g>
+        <g opacity="0.42">
+          <polygon points="-100,612 200,784 520,612" fill="#B0571B"/>
+          <polygon points="360,612 700,804 1040,612" fill="#9C4D17"/>
+          <polygon points="900,612 1220,774 1520,612" fill="#B0571B"/>
+        </g>
+        <g fill="#2A92A2" opacity="0.5" class="cv-ripples">
+          <rect x="0" y="690" width="1440" height="10"/>
+          <rect x="0" y="734" width="1440" height="9"/>
+          <rect x="0" y="784" width="1440" height="8"/>
+          <rect x="0" y="838" width="1440" height="7"/>
+        </g>
+        <rect class="cv-glimmer" x="930" y="612" width="140" height="288" fill="#9FE0E6" opacity="0.35"/>
+      </g>
+    </svg>
+    <div class="cv-halftone"></div>
+    <div class="cv-fade"></div>
+  </div>
+  <div class="cv-lockup">
+    <p class="cv-kicker mono">Sierra Nevada road trip</p>
+    <h1 class="cv-title">
+      <span class="cv-title-main">California</span>
+      <span class="cv-title-sub">Summer Vacation 2026</span>
+    </h1>
+    <p class="cv-route mono">
+      Los Angeles <span class="cv-arrow">&#8594;</span> Sequoia <span class="cv-arrow">&#8594;</span> Kings Canyon <span class="cv-arrow">&#8594;</span> Yosemite <span class="cv-arrow">&#8594;</span> Mammoth Lakes <span class="cv-arrow">&#8594;</span> Mono Lake <span class="cv-arrow">&#8594;</span> Long Beach <span class="cv-arrow">&#8594;</span> Malibu
+    </p>
+    <div class="cv-meta">
+      <span class="cv-dates mono">June 16 &ndash; 23, 2026</span>
+      <span class="cv-dot" aria-hidden="true"></span>
+      <span class="cv-stats mono">8 days &middot; ~96 stops &middot; sea level to 11,053 ft</span>
+    </div>
+  </div>
+  <div class="cv-badge" aria-hidden="true">
+    <svg viewBox="0 0 200 200" focusable="false">
+      <defs>
+        <path id="cvBadgeTop" d="M 100,100 m -74,0 a 74,74 0 1 1 148,0"/>
+        <path id="cvBadgeBot" d="M 100,100 m -74,0 a 74,74 0 1 0 148,0"/>
+      </defs>
+      <circle cx="100" cy="100" r="94" fill="none" stroke="#1E2E26" stroke-width="3"/>
+      <circle cx="100" cy="100" r="86" fill="none" stroke="#1E2E26" stroke-width="1.5"/>
+      <circle class="cv-badge-spin" cx="100" cy="100" r="80" fill="none" stroke="#1E2E26" stroke-width="1" stroke-dasharray="2 6"/>
+      <text class="cv-badge-text mono"><textPath href="#cvBadgeTop" startOffset="50%" text-anchor="middle">EST. 2026</textPath></text>
+      <text class="cv-badge-text mono"><textPath href="#cvBadgeBot" startOffset="50%" text-anchor="middle">SIERRA NEVADA</textPath></text>
+      <g class="cv-badge-mtn">
+        <polygon points="62,118 96,74 130,118" fill="#2F5A42"/>
+        <polygon points="96,74 84,90 108,90" fill="#EDE7D2"/>
+        <polygon points="100,118 124,86 148,118" fill="#1C7C8C"/>
+        <rect x="56" y="118" width="92" height="6" fill="#1E2E26"/>
+        <circle cx="130" cy="66" r="11" fill="#C2693A"/>
+      </g>
+    </svg>
+  </div>
+  <a class="cv-scroll mono" href="#plan">
+    <span>Scroll to plan</span>
+    <span class="cv-chev" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </a>
+</section>
+
+<header class="hero wrap" id="plan" aria-label="Trip plan">
+
+  <div class="profile-card">
+    <div class="profile-head">
+      <h2>Elevation profile</h2>
+      <span>approx · tap a point to locate it</span>
+    </div>
+    <svg id="profile" class="profile-svg" viewBox="0 0 1000 230" preserveAspectRatio="none" role="img" aria-label="Elevation profile of the route"></svg>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="inner">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" type="search" inputmode="search" placeholder="Search stops — “sherman”, “lunch”, “lake”…" aria-label="Search stops">
+      <button class="clear" id="clear" aria-label="Clear search">×</button>
+    </div>
+    <div class="chips" role="group" aria-label="Filter by day">
+      <button class="chip" data-day="all" aria-pressed="true">All days</button>
+      <button class="chip d1" data-day="1" aria-pressed="false">Day 1 · Sequoia</button>
+      <button class="chip d2" data-day="2" aria-pressed="false">Day 2 · Kings Canyon</button>
+      <button class="chip d3" data-day="3" aria-pressed="false">Day 3 · Yosemite→Mammoth</button>
+      <button class="chip d4" data-day="4" aria-pressed="false">Day 4 · Mammoth</button>
+      <button class="chip d5" data-day="5" aria-pressed="false">Day 5 · June Lake & Mono</button>
+      <button class="chip d6" data-day="6" aria-pressed="false">Day 6 · 395 South</button>
+      <button class="chip d7" data-day="7" aria-pressed="false">Day 7 · LA Icons</button>
+      <button class="chip d8" data-day="8" aria-pressed="false">Day 8 · Malibu Coast</button>
+      <span class="count" id="count"></span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="map-card">
+    <div id="map"></div>
+    <div class="legend">
+      <span><i style="background:#2F5A42"></i>Day 1 — Sequoia</span>
+      <span><i style="background:#B0571B"></i>Day 2 — Kings Canyon</span>
+      <span><i style="background:#1C7C8C"></i>Day 3 — Yosemite → Mammoth</span>
+      <span><i style="background:#C2693A"></i>Day 4 — Mammoth Lakes</span>
+      <span><i style="background:#5B7FA6"></i>Day 5 — June Lake & Mono</span>
+      <span><i style="background:#94701A"></i>Day 6 — US-395 South</span>
+      <span><i style="background:#8E4196"></i>Day 7 — LA Icons</span>
+      <span><i style="background:#1F6FD1"></i>Day 8 — Malibu Coast</span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap" id="days"></main>
+
+<div class="wrap">
+  <p class="noresult" id="noresult">No stops match that search.</p>
+
+  <section class="notes">
+    <h2>Field notes</h2>
+    <p class="sub">Practical things that make or break the route</p>
+    <div id="notelist"></div>
+  </section>
+
+  <section class="notes">
+    <h2>Vegetarian eating, day by day</h2>
+    <p class="sub">The family's day-by-day meals plus Mammoth's restaurant lineup — every spot is vegetarian-friendly 🌱</p>
+    <div id="foodlist"></div>
+  </section>
+
+  <section class="notes">
+    <h2>Fuel, day by day</h2>
+    <p class="sub">Where to top off before each leg — tanks run dry in between</p>
+    <div id="fuellist"></div>
+  </section>
+</div>
+
+<footer class="wrap">
+  Built for the Sid Rio Dad trip plan · routes from the original Google Maps links<br>
+  Tioga Pass confirmed open for 2026 · Yosemite needs no day-use reservation in 2026
+</footer>
+
+<script>
+/* ---------------- Data ---------------- */
+const DAY_COLOR = {1:"#2F5A42",2:"#B0571B",3:"#1C7C8C",4:"#C2693A",5:"#5B7FA6",6:"#94701A",7:"#8E4196",8:"#1F6FD1"};
+const DAYS = [
+  {
+    n:1, title:"LA to Wuksachi via Giant Forest", when:"Tue · Jun 16",
+    drive:"~225 mi · 4.5–5 hr driving · plan a full 11–12 hr day",
+    routes:[
+      {label:"Rental → Target", url:"https://maps.app.goo.gl/VGP7SRtNG9RoQQ187"},
+      {label:"→ Bakersfield lunch", url:"https://maps.app.goo.gl/sjxbxNXa62GnEDMh8"},
+      {label:"Sequoia: lower", url:"https://maps.app.goo.gl/2yAhfgWrvJESLAULA"},
+      {label:"Sequoia: Giant Forest", url:"https://maps.app.goo.gl/XNtPYY1U2Ax5qa3X6"}
+    ],
+    stops:[
+      {name:"Alamo Rent A Car (LAX)", note:"Pickup — start as early as you can.", time:"8:00 AM", lat:33.950346, lng:-118.374898, elev:125},
+      {name:"Target", note:"Supplies run before leaving town.", lat:33.9555782, lng:-118.3955385, elev:100},
+      {name:"Punjabi Dhaba, Bakersfield", note:"Lunch stop on the way up.", lat:35.3556007, lng:-119.1070914, elev:400},
+      {name:"Costco Wholesale, Visalia", note:"Fuel up — last cheap gas before the park.", lat:36.2930793, lng:-119.3061752, elev:330},
+      {name:"Kaweah Recreation Area", note:"", lat:36.3959501, lng:-118.9884997, elev:800},
+      {name:"Three Rivers", note:"Gateway town at the park boundary.", lat:36.4388364, lng:-118.9045445, elev:840},
+      {name:"Tunnel Rock", note:"", lat:36.5021461, lng:-118.8123456, elev:2050},
+      {name:"Hospital Rock", note:"Pictographs and grinding stones.", lat:36.521334, lng:-118.7712089, elev:2700},
+      {name:"Amphitheater Point Viewpoint", note:"", lat:36.5364987, lng:-118.7822676, elev:5500},
+      {name:"Vista Point", note:"", lat:36.5420371, lng:-118.7867238, elev:6000},
+      {name:"The Four Guardsmen", note:"Sequoias framing the road.", lat:36.5549285, lng:-118.7811759, elev:6300},
+      {name:"Booker T. Washington Tree", note:"", lat:36.5575659, lng:-118.7707784, elev:6400},
+      {name:"Auto Log", note:"", lat:36.5543468, lng:-118.7692361, elev:6500},
+      {name:"Moro Rock Trail", note:"Short steep granite climb — huge views.", lat:36.5467941, lng:-118.7656765, elev:6725},
+      {name:"Tunnel Log", note:"Drive-through fallen sequoia.", lat:36.5525663, lng:-118.761382, elev:6550},
+      {name:"The Giant Forest", note:"Densest stand of giant sequoias on Earth.", lat:36.5642053, lng:-118.7728896, elev:6400},
+      {name:"General Sherman Tree", note:"Largest tree on Earth by volume.", lat:36.5817069, lng:-118.751442, elev:6900},
+      {name:"The Congress Trail", note:"Paved loop through the big groves.", lat:36.5809946, lng:-118.750251, elev:6900},
+      {name:"The Senate (Trees)", note:"", lat:36.5727314, lng:-118.7495195, elev:6850},
+      {name:"Wuksachi Lodge", note:"Check in — nights 1 & 2.", lat:36.6095924, lng:-118.7520631, elev:7200}
+    ]
+  },
+  {
+    n:2, title:"Kings Canyon Scenic Byway", when:"Wed · Jun 17",
+    drive:"out-and-back to Road's End · ~3 hr driving · full day",
+    routes:[
+      {label:"Grant Grove → Horseshoe Bend", url:"https://maps.app.goo.gl/AE96EaPodf736qb9A"},
+      {label:"Cedar Grove → Road's End", url:"https://maps.app.goo.gl/zPSk1xkawraPhRLn6"}
+    ],
+    stops:[
+      {name:"The Peaks Restaurant (Wuksachi)", note:"Breakfast at the lodge.", time:"8:00 AM", lat:36.6096534, lng:-118.7520599, elev:7200},
+      {name:"Lost Grove", note:"", lat:36.6511169, lng:-118.8275765, elev:6600},
+      {name:"Stony Creek Village — Gas Station", note:"⛽ The ONLY fuel between Sequoia and Kings Canyon — pumps, a small store, and restrooms. Seasonal hours, so call ahead to confirm it's open: (559) 565-3388.", lat:36.6638944, lng:-118.8408786, elev:6400},
+      {name:"Kings Canyon Overlook", note:"", lat:36.7194254, lng:-118.8975159, elev:6800},
+      {name:"Redwood Mountain Overlook", note:"", lat:36.7187125, lng:-118.9186774, elev:6600},
+      {name:"General Grant Tree", note:"The Nation's Christmas Tree.", lat:36.7482167, lng:-118.9711957, elev:6560},
+      {name:"Hume Lake Bridge", note:"", lat:36.7869864, lng:-118.9004285, elev:5200},
+      {name:"Junction View", note:"Where the canyon really opens up.", lat:36.8315086, lng:-118.8899335, elev:3200},
+      {name:"Yucca Point Trailhead", note:"", lat:36.8305232, lng:-118.8769717, elev:3500},
+      {name:"Horseshoe Bend Vista Point", note:"", lat:36.8227648, lng:-118.835315, elev:2800},
+      {name:"Grizzly Falls", note:"Roadside waterfall.", lat:36.8037008, lng:-118.7439657, elev:4400},
+      {name:"Cedar Grove Overlook", note:"", lat:36.8004806, lng:-118.6787816, elev:4600},
+      {name:"Roaring River Falls", note:"Short paved walk to the falls.", lat:36.7804955, lng:-118.6209327, elev:4900},
+      {name:"Zumwalt Meadow", note:"Easy loop under the canyon walls.", lat:36.791792, lng:-118.59776, elev:4900},
+      {name:"Road's End", note:"Turnaround — same byway back to Wuksachi.", lat:36.7947922, lng:-118.5864305, elev:5035}
+    ]
+  },
+  {
+    n:3, title:"Wuksachi to Mammoth via Yosemite", when:"Thu · Jun 18",
+    drive:"long day — ~4–4.5 hr to Yosemite + ~3 hr Tioga traverse",
+    routes:[
+      {label:"Wuksachi → Mammoth", url:"https://maps.app.goo.gl/udPR4xzZPckrX6t57"}
+    ],
+    stops:[
+      {name:"Wuksachi Lodge", note:"Early start — long driving day.", time:"7:30 AM", lat:36.6095924, lng:-118.7520631, elev:7200},
+      {name:"Wawona Tunnel (Tunnel View)", note:"The iconic Yosemite Valley overlook.", lat:37.7157479, lng:-119.6856374, elev:4400},
+      {name:"Yosemite Valley View", note:"Gates of the Valley.", lat:37.7173004, lng:-119.6621211, elev:3900},
+      {name:"Curry Village", note:"Lunch in the valley.", time:"Lunch", lat:37.7384615, lng:-119.5748224, elev:4000},
+      {name:"Olmsted Point", note:"Granite domes and Half Dome from behind.", lat:37.8107002, lng:-119.4855348, elev:8400},
+      {name:"Tenaya Lake", note:"Alpine lake right off the road.", lat:37.8318506, lng:-119.4600072, elev:8150},
+      {name:"Tuolumne Meadows", note:"Last services (store, gas) before the pass.", lat:37.8775876, lng:-119.3770242, elev:8600},
+      {name:"Tioga Lake", note:"", lat:37.9252622, lng:-119.2531439, elev:9650},
+      {name:"Tioga Pass", note:"9,943 ft — the park's east exit and highest point you'll drive on the trip.", lat:37.9318316, lng:-119.1857749, elev:9943},
+      {name:"Limelight Hotel, Mammoth Lakes", note:"Check in — journey's end.", lat:37.6475275, lng:-118.9851099, elev:7800}
+    ]
+  },
+  {
+    n:4, title:"Mammoth Lakes: Sunrise Lakes, Summit & Hot Springs", when:"Fri · Jun 19",
+    drive:"based in Mammoth Lakes — sunrise lake loop, gondola to 11,053 ft, eastern escarpment evening",
+    routes:[
+      {label:"Sunrise lake loop", url:"https://maps.app.goo.gl/1Tci6T7bHjb1SnZV7"},
+      {label:"→ Mammoth Gondola", url:"https://maps.app.goo.gl/RiSDBmQoyhY7Mx7u7"},
+      {label:"Evening: Hot Creek & Lakes", url:"https://maps.app.goo.gl/cvbCeSXgrMuKDx6S9"}
+    ],
+    stops:[
+      {name:"Limelight Hotel, Mammoth Lakes", note:"5:30 AM start — sunrise lake loop, back by 8 AM.", time:"5:30 AM", lat:37.6475275, lng:-118.9851099, elev:7800},
+      {name:"Horseshoe Lake", note:"First light on the water — carbon dioxide seeps here; stay on trail.", lat:37.6085992, lng:-119.0190786, elev:8940},
+      {name:"Lake Mary", note:"Largest lake in the Mammoth Basin.", lat:37.6031215, lng:-119.0030734, elev:8900},
+      {name:"Mammoth Lakes Pack Outfit", note:"", lat:37.6098009, lng:-119.0028057, elev:8870},
+      {name:"Lake Mamie", note:"", lat:37.6080953, lng:-119.0107125, elev:8875},
+      {name:"Twin Falls Overlook", note:"", lat:37.6110603, lng:-119.0102305, elev:8800},
+      {name:"Twin Lakes", note:"Back to hotel by 8 AM.", lat:37.6178377, lng:-119.0085299, elev:8590},
+      {name:"Mammoth Mountain Gondola", note:"Board at The Village — scenic gondola up Mammoth Mountain.", time:"~9:30 AM", lat:37.6500194, lng:-118.9854808, elev:7953},
+      {name:"Mammoth Mountain Summit", note:"11,053 ft — highest point of the trip. Café at the top for coffee and lunch. Back down by 1–2 PM.", lat:37.6310, lng:-119.0329, elev:11053},
+      {name:"Hot Creek Ranch Road", note:"Turn-off toward the geothermal zone east of Mammoth.", time:"~3:00 PM", lat:37.6344531, lng:-118.8399478, elev:7100},
+      {name:"Brees Lookout", note:"", lat:37.6631244, lng:-118.8270571, elev:7400},
+      {name:"Hot Creek Geologic Site", note:"Active volcanic hot springs — boardwalk viewing only, no swimming.", lat:37.661764, lng:-118.832366, elev:7000},
+      {name:"Convict Lake", note:"One of the Eastern Sierra's most dramatic lakes, ringed by 12,000 ft peaks.", lat:37.5898951, lng:-118.8582239, elev:7583},
+      {name:"Crowley Lake Stone Columns", note:"Otherworldly columnar basalt — ancient volcanic remnants along the lakeshore.", lat:37.6095923, lng:-118.7203897, elev:6781}
+    ]
+  },
+  {
+    n:5, title:"June Lake Loop & Mono Lake", when:"Sat · Jun 20",
+    drive:"scenic day loop north — June Lake, ancient Mono Lake, return to Mammoth",
+    routes:[
+      {label:"June Lake Loop & Mono Lake", url:"https://maps.app.goo.gl/RREEJM3tombztq3Z7"}
+    ],
+    stops:[
+      {name:"Limelight Hotel, Mammoth Lakes", note:"Morning start for the June Lake Loop.", time:"Morning", lat:37.6475275, lng:-118.9851099, elev:7800},
+      {name:"June Lake Beach", note:"Stunning glacial lake at the base of the June Lake Loop.", lat:37.7951288, lng:-119.0680686, elev:7620},
+      {name:"Silver Lake", note:"Quiet trailhead lake — short walks to nearby waterfalls.", lat:37.777175, lng:-119.1250311, elev:7215},
+      {name:"June Lake Loop (CA-158)", note:"The loop road passes four lakes beneath towering Sierra peaks.", lat:37.8132859, lng:-119.1110403, elev:7600},
+      {name:"Mono Lake (South Tufa)", note:"Eerie tufa towers rising from an ancient alkaline lake — over 760,000 years old.", lat:37.9421285, lng:-119.0291284, elev:6384},
+      {name:"Mono Basin Scenic Area Visitor Center", note:"Excellent exhibits on Mono Lake's ecology and the water rights fight that saved it.", lat:37.9667531, lng:-119.1202015, elev:6400},
+      {name:"Mono Lake Navy Beach Viewpoint", note:"Wide view across the lake to the tufas — great for the drive back to Mammoth.", lat:37.9390884, lng:-119.0267462, elev:6380}
+    ]
+  },
+  {
+    n:6, title:"Mammoth to Long Beach via US-395", when:"Sun · Jun 21",
+    drive:"~350 mi south down the Eastern Sierra & Mojave · long driving day",
+    routes:[
+      {label:"Mammoth → Red Rock Canyon", url:"https://maps.app.goo.gl/UwKPQX7Y8zCEbF3n6"},
+      {label:"Red Rock → Long Beach", url:"https://maps.app.goo.gl/nKM4xGqEag6Wukf86"}
+    ],
+    stops:[
+      {name:"Limelight Hotel, Mammoth Lakes", note:"Check out early — long drive south down US-395 to the coast.", time:"7:30 AM", lat:37.6475275, lng:-118.9851099, elev:7800},
+      {name:"Sherwin Summit", note:"US-395 high point just south of Mammoth — last big look at the Sierra crest.", lat:37.514376, lng:-118.627901, elev:7000},
+      {name:"Owens Valley", note:"The deepest valley in the US, walled by the Sierra and the White Mountains.", lat:37.3735403, lng:-118.3773316, elev:4000},
+      {name:"Erick Schat's Bakkerÿ, Bishop", note:"Famous roadside bakery — sheepherder bread, pastries, and veg sandwiches.", time:"Breakfast", lat:37.3678214, lng:-118.3956881, elev:4150},
+      {name:"Lake Sabrina", note:"Alpine reservoir high above Bishop — a worthwhile detour up Bishop Creek Canyon.", lat:37.2062364, lng:-118.6184567, elev:9100},
+      {name:"Lone Pine", note:"Eastern Sierra town beneath Mt. Whitney, the highest peak in the lower 48.", lat:36.6063107, lng:-118.0637119, elev:3727},
+      {name:"Mobius Arch", note:"Granite arch framing Mt. Whitney — short loop in the Alabama Hills.", lat:36.6135833, lng:-118.1256667, elev:4500},
+      {name:"Movie Road", note:"Scenic dirt road through the Alabama Hills, backdrop to hundreds of Westerns.", lat:36.6211389, lng:-118.1165, elev:4500},
+      {name:"Fossil Falls", note:"Polished black basalt gorge carved by an Ice Age river — short walk from the lot.", lat:35.969946, lng:-117.9089637, elev:3100},
+      {name:"Red Rock Canyon State Park", note:"Dramatic desert cliffs where the Sierra gives way to the Mojave.", lat:35.3843718, lng:-117.9623195, elev:2600},
+      {name:"Antelope Valley", note:"High-desert crossing toward LA — poppy country in spring.", lat:34.7513712, lng:-118.2522977, elev:2350},
+      {name:"Marriott Long Beach Downtown", note:"Check in — nights 6, 7 & 8 on the coast.", lat:33.7674126, lng:-118.1915992, elev:20}
+    ]
+  },
+  {
+    n:7, title:"Los Angeles Icons", when:"Mon · Jun 22",
+    drive:"city loop from Long Beach — Beverly Hills, Hollywood, Griffith & Santa Monica",
+    routes:[
+      {label:"LA icons loop", url:"https://maps.app.goo.gl/o8M9NuXJRnJ6JEmj8"}
+    ],
+    stops:[
+      {name:"Marriott Long Beach Downtown", note:"Morning start — a full day of LA landmarks, back here tonight.", time:"Morning", lat:33.7674126, lng:-118.1915992, elev:20},
+      {name:"Beverly Hills", note:"Palm-lined streets and the famous sign at Beverly Gardens Park.", lat:34.0730715, lng:-118.4016265, elev:270},
+      {name:"Rodeo Drive", note:"Three blocks of flagship luxury boutiques and people-watching.", lat:34.0677919, lng:-118.40163, elev:280},
+      {name:"Hollywood Walk of Fame", note:"More than 2,700 brass stars along Hollywood Boulevard.", lat:34.1016059, lng:-118.3295694, elev:340},
+      {name:"Lake Hollywood Park", note:"Grassy park with one of the closest, cleanest views of the Hollywood Sign.", lat:34.1269448, lng:-118.3261053, elev:720},
+      {name:"Hollywood Sign", note:"The 1923 landmark on Mt. Lee — best admired from a distance.", lat:34.1341151, lng:-118.3215482, elev:1580},
+      {name:"Griffith Observatory", note:"Free observatory with sweeping views over LA and the sign — great near sunset.", lat:34.1184341, lng:-118.3003935, elev:1135},
+      {name:"Santa Monica Pier", note:"Pacific Park rides, the carousel, and the end of Route 66.", lat:34.0093515, lng:-118.4974682, elev:15},
+      {name:"Marriott Long Beach Downtown", note:"Back to the hotel for the night.", lat:33.7674126, lng:-118.1915992, elev:20}
+    ]
+  },
+  {
+    n:8, title:"Malibu Coast & PCH Beaches", when:"Tue · Jun 23",
+    drive:"Pacific Coast Highway loop — Getty Villa, Malibu beaches & Venice",
+    routes:[
+      {label:"Long Beach → Malibu loop", url:"https://maps.app.goo.gl/aa4YZZniGGorCTKFA"}
+    ],
+    stops:[
+      {name:"Marriott Long Beach Downtown", note:"Morning start — up the Pacific Coast Highway to Malibu and back.", time:"Morning", lat:33.7675689, lng:-118.1919171, elev:20},
+      {name:"The Getty Villa", note:"Roman-style museum of Greek and Roman antiquities — free, but reserve a timed entry.", lat:34.0458857, lng:-118.5648608, elev:200},
+      {name:"Malibu Pier", note:"Historic pier marking the heart of the Malibu coastline.", lat:34.0365277, lng:-118.6761657, elev:10},
+      {name:"Point Dume", note:"Headland with sweeping whale-watching views over Santa Monica Bay.", lat:34.001201, lng:-118.806442, elev:215},
+      {name:"Point Dume State Beach", note:"Wide sandy cove beneath the bluffs — tidepools at low tide.", lat:34.0110923, lng:-118.8165959, elev:10},
+      {name:"Leo Carrillo State Beach", note:"Sea caves and tidepools at the north end of Malibu's beaches.", lat:34.0445508, lng:-118.9406949, elev:20},
+      {name:"El Matador State Beach", note:"Sea stacks and arches below a steep cliff staircase — the most photogenic Malibu beach.", lat:34.0380426, lng:-118.874663, elev:30},
+      {name:"Malibu Hindu Temple", note:"Serene South Indian temple in the canyon — weekend vegetarian canteen.", lat:34.0950336, lng:-118.7097178, elev:900},
+      {name:"Venice Beach", note:"Boardwalk, Muscle Beach, and skate culture to close out the trip.", lat:33.9932584, lng:-118.480598, elev:15}
+    ]
+  }
+];
+
+const NOTES = [
+  {t:"Fuel discipline", icon:"fuel", b:"No gas in the heart of either park. Top off at the Visalia Costco on Day 1. The one fuel stop between Sequoia and Kings Canyon is Stony Creek Village (Day 2) — your only backup, and it's seasonal, so call ahead: (559) 565-3388. Before the Day 3 Tioga crossing, the only pumps are Crane Flat and the Tuolumne Meadows store."},
+  {t:"Altitude", icon:"peak", b:"You climb from sea level to Tioga Pass (9,943 ft) on Day 3, then ride the gondola to Mammoth Mountain's 11,053 ft summit on Day 4 — the trip's high point. Hydrate, and take Moro Rock, the Tioga stops, and the summit café at an easy pace."},
+  {t:"Tioga Pass is open", icon:"check", b:"The road opened May 15, 2026 and is open for the season, so the Day 3 traverse works. Late-season storms can still close it briefly — worth a glance at Caltrans QuickMap before you go.", ok:true},
+  {t:"No Yosemite reservation", icon:"check", b:"Yosemite requires no vehicle day-use reservation in 2026 — just the standard entrance fee or park pass.", ok:true},
+  {t:"Day 3 is the heavy one", icon:"clock", b:"There's no shortcut from Sequoia to Yosemite; you loop out and up via CA-41, then cross the whole of Tioga Road to Mammoth. That's 7+ hours of driving plus stops. If you're running late, trim a couple of the smaller Tioga overlooks rather than rushing the pass at dusk."},
+  {t:"Road's End is a dead end", icon:"loop", b:"Day 2 is an out-and-back — you return up the same byway to Wuksachi for the night, so budget the drive back in."}
+];
+
+/* ---------------- Build stop list with ids ---------------- */
+let SEQ = [];
+DAYS.forEach(d=>d.stops.forEach((s,i)=>{ s.day=d.n; s.idx=i+1; s.id=`s-${d.n}-${i+1}`; SEQ.push(s); }));
+
+/* ---------------- Stop thumbnails: inline SVG icons by category (offline) ---------------- */
+const CAT = {
+  car:'<svg viewBox="0 0 24 24"><path d="M3 13l2-6h14l2 6v4H3z"/><circle cx="7.5" cy="17" r="1.4"/><circle cx="16.5" cy="17" r="1.4"/></svg>',
+  shop:'<svg viewBox="0 0 24 24"><path d="M2 3h2l2.2 11h11l2-8H6.5"/><circle cx="9" cy="19" r="1.4"/><circle cx="17" cy="19" r="1.4"/></svg>',
+  food:'<svg viewBox="0 0 24 24"><path d="M6 3v6a2 2 0 0 0 4 0V3M8 9v12"/><path d="M17 3c-1.6 0-2.6 2-2.6 4.5S15.4 12 17 12.5V21"/></svg>',
+  fuel:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="9" height="18" rx="1"/><path d="M3 11h9M12 7h3l3 3v7a2 2 0 0 1-4 0V9"/></svg>',
+  lodge:'<svg viewBox="0 0 24 24"><path d="M3 7v12M3 13h18v6M21 19v-5a3 3 0 0 0-3-3h-8v4"/><circle cx="7" cy="11" r="1.6"/></svg>',
+  gondola:'<svg viewBox="0 0 24 24"><path d="M3 4l18-2M12 3v3M6 8h12a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V9a1 1 0 0 1 1-1ZM5 13h14"/></svg>',
+  info:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></svg>',
+  geo:'<svg viewBox="0 0 24 24"><path d="M4 20h16M7 16c-1.2-1.6-1.2-3.4 0-5M12 16c-1.2-1.6-1.2-3.4 0-5M17 16c-1.2-1.6-1.2-3.4 0-5"/></svg>',
+  falls:'<svg viewBox="0 0 24 24"><path d="M8 3v9M12 3v9M16 3v9M4 18c2 0 2-1.5 4-1.5S10 18 12 18s2-1.5 4-1.5S18 18 20 18"/></svg>',
+  peak:'<svg viewBox="0 0 24 24"><path d="m3 20 7-13 4 7 2-3 5 9z"/></svg>',
+  meadow:'<svg viewBox="0 0 24 24"><path d="M5 21c0-4 .6-7 2-9M10 21c0-5 1-8 2-10M15 21c0-4 .6-7 2-9M19 21c0-3 .3-5 1-7"/></svg>',
+  view:'<svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>',
+  lake:'<svg viewBox="0 0 24 24"><path d="M3 8c2 0 2 1.4 4.5 1.4S10 8 12 8s2 1.4 4.5 1.4S19 8 21 8M3 13c2 0 2 1.4 4.5 1.4S10 13 12 13s2 1.4 4.5 1.4S19 13 21 13M3 18c2 0 2 1.4 4.5 1.4S10 18 12 18s2 1.4 4.5 1.4S19 18 21 18"/></svg>',
+  tree:'<svg viewBox="0 0 24 24"><path d="M12 3 6 12h4l-3 6h10l-3-6h4z"/><path d="M12 18v3"/></svg>',
+  rock:'<svg viewBox="0 0 24 24"><path d="M3 19h18M5 19c0-5 3-9 7-9s7 4 7 9"/></svg>',
+  road:'<svg viewBox="0 0 24 24"><path d="M9 21 7 3M15 21l2-18"/><path d="M12 6v2M12 12v2M12 18v2"/></svg>',
+  trail:'<svg viewBox="0 0 24 24"><ellipse cx="8" cy="8" rx="2" ry="3"/><ellipse cx="15" cy="15" rx="2" ry="3"/></svg>',
+  town:'<svg viewBox="0 0 24 24"><path d="M3 21h18M6 21V7l5-3 5 3v14M16 21V11h4v10"/></svg>',
+  pin:'<svg viewBox="0 0 24 24"><path d="M12 21s-7-7-7-12a7 7 0 0 1 14 0c0 5-7 12-7 12Z"/><circle cx="12" cy="9" r="2.4"/></svg>'
+};
+const CAT_OVERRIDE = {
+  "The Four Guardsmen":"tree",
+  "Three Rivers":"town",
+  "Kaweah Recreation Area":"lake",
+  "Erick Schat's Bakkerÿ, Bishop":"food",
+  "Owens Valley":"view",
+  "Antelope Valley":"view",
+  "Mobius Arch":"rock",
+  "Lone Pine":"town",
+  "Rodeo Drive":"shop",
+  "Griffith Observatory":"view",
+  "The Getty Villa":"info",
+  "Malibu Hindu Temple":"info"
+};
+const CAT_RULES = [
+  [/rent a car|rental/, 'car'],
+  [/\bgas\b/, 'fuel'],
+  [/costco|target|vons|market|grocery/, 'shop'],
+  [/dhaba|restaurant|eatery|grill|caf[eé]|curry village/, 'food'],
+  [/hotel|lodge|limelight|wuksachi/, 'lodge'],
+  [/gondola/, 'gondola'],
+  [/visitor/, 'info'],
+  [/hot creek|geologic|stone column|columns/, 'geo'],
+  [/falls/, 'falls'],
+  [/pass|summit/, 'peak'],
+  [/meadow/, 'meadow'],
+  [/overlook|vista|viewpoint|lookout|view|point/, 'view'],
+  [/lake|beach/, 'lake'],
+  [/tree|forest|grove|log|sequoia|redwood/, 'tree'],
+  [/rock/, 'rock'],
+  [/loop|road|byway|ca-1|ca-4|highway/, 'road'],
+  [/trail/, 'trail']
+];
+function catOf(name){
+  if(CAT_OVERRIDE[name]) return CAT_OVERRIDE[name];
+  const s=name.toLowerCase();
+  for(const [re,c] of CAT_RULES){ if(re.test(s)) return c; }
+  return 'pin';
+}
+function thumbSvg(name){ return CAT[catOf(name)] || CAT.pin; }
+
+/* ---------------- Offline map ---------------- */
+let mapMode='offline';
+let map=null;
+let markers={};
+let activeMarkerId=null;
+const VISITED_KEY='sierra-crossing.visited.v1';
+const SKIPPED_KEY='sierra-crossing.skipped.v1';
+let visitedStops=loadVisitedStops();
+let skippedStops=loadSkippedStops();
+skippedStops.forEach(id=>visitedStops.delete(id));
+if(skippedStops.size) saveVisitedStops();
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+
+function loadVisitedStops(){
+  try{
+    const raw=localStorage.getItem(VISITED_KEY);
+    const ids=raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(ids) ? ids.filter(id=>/^s-\d+-\d+$/.test(id)) : []);
+  }catch(e){
+    return new Set();
+  }
+}
+
+function saveVisitedStops(){
+  try{ localStorage.setItem(VISITED_KEY, JSON.stringify([...visitedStops])); }catch(e){}
+}
+
+function loadSkippedStops(){
+  try{
+    const raw=localStorage.getItem(SKIPPED_KEY);
+    const ids=raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(ids) ? ids.filter(id=>/^s-\d+-\d+$/.test(id)) : []);
+  }catch(e){
+    return new Set();
+  }
+}
+
+function saveSkippedStops(){
+  try{ localStorage.setItem(SKIPPED_KEY, JSON.stringify([...skippedStops])); }catch(e){}
+}
+
+function visitedIcon(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+}
+
+function skippedIcon(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19 19 5"/></svg>';
+}
+
+function visitLabel(id){
+  return visitedStops.has(id) ? 'Visited' : 'Mark visited';
+}
+
+function skipLabel(id){
+  return skippedStops.has(id) ? 'Skipped' : 'Skip';
+}
+
+function markerVisitedStyle(id){
+  const isVisited=visitedStops.has(id);
+  const isSkipped=skippedStops.has(id);
+  const stop=SEQ.find(s=>s.id===id) || {};
+  const isFuel=/⛽/.test(stop.note||'');
+  if(mapMode==='leaflet' && markers[id]){
+    markers[id].setStyle({
+      color:(isVisited || isSkipped)?'#1E2E26':(isFuel?'#1E2E26':'#fff'),
+      fillColor:isSkipped ? '#6B746B' : DAY_COLOR[stop.day],
+      weight:(isVisited || isSkipped)?3:(isFuel?3:2),
+      fillOpacity:isSkipped ? .45 : (isVisited ? .55 : 1),
+      opacity:(isVisited || isSkipped) ? .85 : 1
+    });
+  } else if(markers[id]){
+    markers[id].classList.toggle('is-visited',isVisited);
+    markers[id].classList.toggle('is-skipped',isSkipped);
+  }
+}
+
+function drawOfflineMap(){
+  mapMode='offline';
+  markers={};
+  const mapEl=document.getElementById('map');
+  const W=1000,H=560,pad=58;
+  const minLat=Math.min(...SEQ.map(s=>s.lat)), maxLat=Math.max(...SEQ.map(s=>s.lat));
+  const minLng=Math.min(...SEQ.map(s=>s.lng)), maxLng=Math.max(...SEQ.map(s=>s.lng));
+  const x=lng=>pad+((lng-minLng)/(maxLng-minLng))*(W-pad*2);
+  const y=lat=>pad+((maxLat-lat)/(maxLat-minLat))*(H-pad*2);
+  const xy=s=>`${x(s.lng).toFixed(1)} ${y(s.lat).toFixed(1)}`;
+  const routeLines=[1,2,3,4,5,6,7,8].map(dn=>{
+    const pts=SEQ.filter(s=>s.day===dn);
+    const d=pts.map((s,i)=>`${i?'L':'M'}${xy(s)}`).join(' ');
+    return `<path class="route-line" d="${d}" stroke="${DAY_COLOR[dn]}" stroke-width="7" opacity=".78"/>`;
+  }).join('');
+  const markerHtml=SEQ.map(s=>{
+    const fuel=/⛽/.test(s.note||'');
+    return `<circle class="map-marker${visitedStops.has(s.id)?' is-visited':''}${skippedStops.has(s.id)?' is-skipped':''}" data-id="${s.id}" cx="${x(s.lng).toFixed(1)}" cy="${y(s.lat).toFixed(1)}" r="${fuel?8:6}" fill="${DAY_COLOR[s.day]}" stroke="${fuel?'#1E2E26':'#fff'}" stroke-width="${fuel?3:2}">
+      <title>Day ${s.day}, stop ${s.idx}: ${esc(s.name)} - ${s.elev.toLocaleString()} ft</title>
+    </circle>`;
+  }).join('');
+  const labels=[
+    ["Los Angeles",SEQ[0],-8,-13],
+    ["Sequoia",SEQ.find(s=>s.name==="General Sherman Tree"),12,-10],
+    ["Yosemite",SEQ.find(s=>s.name==="Yosemite Valley"),12,0],
+    ["Mammoth",SEQ.find(s=>s.name==="Mammoth Lakes"),12,-8],
+    ["Mono Lake",SEQ.find(s=>s.name==="Mono Lake South Tufa Area"),12,0]
+  ].filter(([,s])=>s).map(([name,s,dx,dy])=>
+    `<text class="map-label" x="${(x(s.lng)+dx).toFixed(1)}" y="${(y(s.lat)+dy).toFixed(1)}">${esc(name)}</text>`
+  ).join('');
+  mapEl.innerHTML=`
+    <div class="offline-map">
+      <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Offline route map from Los Angeles through Sequoia, Kings Canyon, Yosemite, Mammoth Lakes, June Lake, and Mono Lake">
+        <path class="terrain" d="M20 128 C160 80 240 166 360 116 S560 72 702 118 850 176 980 112"/>
+        <path class="terrain" d="M10 224 C170 178 268 278 414 218 S606 162 748 216 860 298 990 232"/>
+        <path class="terrain" d="M0 338 C150 298 278 384 424 328 S620 278 770 328 872 408 1000 348"/>
+        <path class="terrain" d="M22 452 C156 418 284 494 430 444 S640 398 786 446 872 502 982 462"/>
+        <g opacity=".26" stroke="#1E2E26" stroke-width="1">
+          <line x1="0" y1="0" x2="1000" y2="560"/>
+          <line x1="0" y1="120" x2="780" y2="560"/>
+          <line x1="180" y1="0" x2="1000" y2="462"/>
+        </g>
+        <g>${routeLines}</g>
+        <g>${markerHtml}</g>
+        <g>${labels}</g>
+      </svg>
+      <div class="map-hint" id="map-hint">Offline route map. Tap a marker or use "Show on map" from any stop to highlight it.</div>
+    </div>`;
+  mapEl.querySelectorAll('.map-marker').forEach(el=>{
+    markers[el.dataset.id]=el;
+    el.addEventListener('click',()=>highlight(el.dataset.id));
+  });
+}
+
+function fitVisible(ids){
+  const visible=new Set(ids);
+  if(mapMode==='leaflet' && map){
+    Object.entries(markers).forEach(([id,m])=>{
+      if(visible.has(id)){
+        if(!map.hasLayer(m)) m.addTo(map);
+        markerVisitedStyle(id);
+      } else {
+        m.setStyle({opacity:.18,fillOpacity:.18});
+      }
+    });
+    const pts=ids.map(id=>markers[id] && markers[id].getLatLng()).filter(Boolean);
+    if(pts.length) map.fitBounds(L.latLngBounds(pts).pad(0.18),{animate:false});
+    return;
+  }
+  Object.entries(markers).forEach(([id,el])=>el.classList.toggle('is-muted',!visible.has(id)));
+}
+
+drawOfflineMap();
+
+function loadAsset(tag, attrs, timeout=6000){
+  return new Promise((resolve,reject)=>{
+    const el=document.createElement(tag);
+    let done=false;
+    const finish=ok=>{
+      if(done) return;
+      done=true;
+      clearTimeout(timer);
+      ok ? resolve(el) : reject(new Error(`Failed to load ${attrs.href || attrs.src}`));
+    };
+    Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+    el.onload=()=>finish(true);
+    el.onerror=()=>finish(false);
+    const timer=setTimeout(()=>finish(false),timeout);
+    document.head.appendChild(el);
+  });
+}
+
+function tryOnlineMap(){
+  if(!navigator.onLine) return;
+  const css='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
+  const js='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+  Promise.all([
+    loadAsset('link',{rel:'stylesheet',href:css}),
+    loadAsset('script',{src:js})
+  ]).then(()=>{
+    if(window.L && L.map) initLeafletMap();
+  }).catch(()=>{});
+}
+
+function initLeafletMap(){
+  mapMode='leaflet';
+  markers={};
+  activeMarkerId=null;
+  const mapEl=document.getElementById('map');
+  mapEl.innerHTML='';
+  map = L.map('map',{scrollWheelZoom:false}).setView([36.9,-118.9],8);
+  const carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+    maxZoom:19, attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(map);
+  const topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',{
+    maxZoom:17, attribution:'&copy; OpenStreetMap · SRTM | &copy; OpenTopoMap (CC-BY-SA)'});
+  L.control.layers({"Clean":carto,"Topographic":topo},null,{position:'topright'}).addTo(map);
+  map.on('focus',()=>map.scrollWheelZoom.enable());
+  map.on('blur',()=>map.scrollWheelZoom.disable());
+
+  [1,2,3,4,5,6,7,8].forEach(dn=>{
+    const pts=SEQ.filter(s=>s.day===dn).map(s=>[s.lat,s.lng]);
+    if(pts.length) L.polyline(pts,{color:DAY_COLOR[dn],weight:4,opacity:.62}).addTo(map);
+  });
+
+  SEQ.forEach(s=>{
+    const isFuel=/⛽/.test(s.note||'');
+    const m=L.circleMarker([s.lat,s.lng],{
+      radius:isFuel?9:7,color:isFuel?'#1E2E26':'#fff',weight:isFuel?3:2,fillColor:DAY_COLOR[s.day],fillOpacity:1
+    });
+    m._baseRadius=isFuel?9:7;
+    const dir=`https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}`;
+    m.bindPopup(
+      `<span class="pop-name"><span class="pop-ico" style="color:${DAY_COLOR[s.day]}">${thumbSvg(s.name)}</span>${esc(s.name)}</span>`+
+      `<span class="pop-meta">DAY ${s.day} · STOP ${s.idx} · ${s.elev.toLocaleString()} FT</span>`+
+      (s.note?`<p class="pop-note">${s.note}</p>`:`<div style="height:6px"></div>`)+
+      `<a href="${dir}" target="_blank" rel="noopener">Directions ↗</a>`
+    );
+    m.on('click',()=>highlight(s.id));
+    markers[s.id]=m.addTo(map);
+    markerVisitedStyle(s.id);
+  });
+  apply();
+}
+
+tryOnlineMap();
+
+/* ---------------- Render day sections ---------------- */
+const daysEl=document.getElementById('days');
+function pin(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>';}
+function arrow(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M9 7h8v8"/></svg>';}
+
+DAYS.forEach(d=>{
+  const sec=document.createElement('section');
+  sec.className=`day d${d.n}`;
+  sec.dataset.day=d.n;
+  let routesHtml=d.routes.map(r=>`<a class="route-btn" href="${r.url}" target="_blank" rel="noopener">${arrow()} ${r.label}</a>`).join('');
+  let stopsHtml=d.stops.map((s,i)=>{
+    const dir=`https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lng}`;
+    const isVisited=visitedStops.has(s.id);
+    const isSkipped=skippedStops.has(s.id);
+    return `<li class="stop${isVisited?' visited':''}${isSkipped?' skipped':''}" id="${s.id}" data-search="${(s.name+' '+s.note).toLowerCase()}">
+      <div class="thumb">${thumbSvg(s.name)}<span class="seq">${i+1}</span></div>
+      <div class="stop-main">
+        <div class="stop-top">
+          <span class="stop-name">${s.name}</span>
+          <span class="elev">${s.elev.toLocaleString()} ft</span>
+        </div>
+        ${s.time?`<span class="stop-time">${s.time}</span>`:''}${s.note?`<p class="stop-note">${s.note}</p>`:''}
+        <div class="stop-links">
+          <button class="slink locate" data-id="${s.id}">${pin()} Show on map</button>
+          <a class="slink" href="${dir}" target="_blank" rel="noopener">${arrow()} Directions</a>
+          <button class="slink skip-toggle" type="button" data-id="${s.id}" aria-pressed="${isSkipped?'true':'false'}">${skippedIcon()} <span>${skipLabel(s.id)}</span></button>
+          <button class="slink visit-toggle" type="button" data-id="${s.id}" aria-pressed="${isVisited?'true':'false'}">${visitedIcon()} <span>${visitLabel(s.id)}</span></button>
+        </div>
+      </div>
+    </li>`;
+  }).join('');
+  sec.innerHTML=`
+    <div class="day-head">
+      <span class="day-tag">Day ${d.n}</span>
+      <h2>${d.title}</h2>
+      <span class="when">${d.when}</span>
+    </div>
+    <div class="day-meta"><span class="drive">🚗 <b>${d.drive}</b></span></div>
+    <div class="routes">${routesHtml}</div>
+    <ol class="stops">${stopsHtml}</ol>`;
+  daysEl.appendChild(sec);
+});
+
+function setVisited(id, isVisited){
+  if(isVisited){
+    visitedStops.add(id);
+    skippedStops.delete(id);
+  } else {
+    visitedStops.delete(id);
+  }
+  saveVisitedStops();
+  saveSkippedStops();
+
+  const li=document.getElementById(id);
+  if(li){
+    li.classList.toggle('visited',visitedStops.has(id));
+    li.classList.toggle('skipped',skippedStops.has(id));
+  }
+
+  updateStatusButtons(id);
+
+  markerVisitedStyle(id);
+  updateCount();
+}
+
+function setSkipped(id, isSkipped){
+  if(isSkipped){
+    skippedStops.add(id);
+    visitedStops.delete(id);
+  } else {
+    skippedStops.delete(id);
+  }
+  saveVisitedStops();
+  saveSkippedStops();
+
+  const li=document.getElementById(id);
+  if(li){
+    li.classList.toggle('visited',visitedStops.has(id));
+    li.classList.toggle('skipped',skippedStops.has(id));
+  }
+
+  updateStatusButtons(id);
+  markerVisitedStyle(id);
+  updateCount();
+}
+
+function updateStatusButtons(id){
+  const visitBtn=document.querySelector(`.visit-toggle[data-id="${id}"]`);
+  if(visitBtn){
+    visitBtn.setAttribute('aria-pressed', visitedStops.has(id) ? 'true' : 'false');
+    const label=visitBtn.querySelector('span');
+    if(label) label.textContent=visitLabel(id);
+  }
+
+  const skipBtn=document.querySelector(`.skip-toggle[data-id="${id}"]`);
+  if(skipBtn){
+    skipBtn.setAttribute('aria-pressed', skippedStops.has(id) ? 'true' : 'false');
+    const label=skipBtn.querySelector('span');
+    if(label) label.textContent=skipLabel(id);
+  }
+}
+
+function updateCount(){
+  const el=document.getElementById('count');
+  if(el) el.textContent=`${currentVisibleCount} / ${SEQ.length} stops · ${visitedStops.size} visited · ${skippedStops.size} skipped`;
+}
+
+document.querySelectorAll('.skip-toggle').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const id=b.dataset.id;
+    setSkipped(id,!skippedStops.has(id));
+  });
+});
+
+document.querySelectorAll('.visit-toggle').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const id=b.dataset.id;
+    setVisited(id,!visitedStops.has(id));
+  });
+});
+
+document.querySelectorAll('.locate').forEach(b=>{
+  b.addEventListener('click',()=>{
+    highlight(b.dataset.id);
+    document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'});
+  });
+});
+
+function highlight(id){
+  if(mapMode==='leaflet' && map && markers[id]){
+    if(activeMarkerId && markers[activeMarkerId]) markers[activeMarkerId].setRadius(markers[activeMarkerId]._baseRadius);
+    activeMarkerId=id;
+    const m=markers[id];
+    m.setRadius((m._baseRadius || 7) + 4);
+    m.setStyle({opacity:1,fillOpacity:1});
+    map.flyTo(m.getLatLng(),13,{duration:.6});
+    m.openPopup();
+  } else if(markers[id]){
+    if(activeMarkerId && markers[activeMarkerId]) markers[activeMarkerId].classList.remove('is-active');
+    activeMarkerId=id;
+    markers[id].classList.remove('is-muted');
+    markers[id].classList.add('is-active');
+    const s=SEQ.find(x=>x.id===id);
+    const hint=document.getElementById('map-hint');
+    if(s && hint) hint.textContent=`Day ${s.day}, stop ${s.idx}: ${s.name} - ${s.elev.toLocaleString()} ft`;
+  }
+  const li=document.getElementById(id);
+  if(li){
+    const orig=li.style.background;
+    li.style.transition='background .2s';
+    li.style.background='rgba(28,124,140,.16)';
+    setTimeout(()=>{li.style.background=orig;},900);
+  }
+}
+
+/* ---------------- Field notes ---------------- */
+const icons={
+  fuel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="9" height="18" rx="1"/><path d="M3 11h9M12 7h3l3 3v7a2 2 0 0 1-4 0V9"/></svg>',
+  peak:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 20 7-13 4 7 2-3 5 9z"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+  loop:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3l3 3-3 3M7 21l-3-3 3-3"/><path d="M20 6H9a5 5 0 0 0 0 10M4 18h11a5 5 0 0 0 0-10"/></svg>',
+  veg:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 4 13C4 8 8 4 20 4c0 8-4 13-9 13Z"/><path d="M4 21c2-5 6-8 11-9"/></svg>'
+};
+const nl=document.getElementById('notelist');
+NOTES.forEach(n=>{
+  const el=document.createElement('div'); el.className='note-item';
+  el.innerHTML=`<span class="ico" ${n.ok?'style="color:#2F5A42"':''}>${icons[n.icon]}</span>
+    <div><h3>${n.t}</h3><p>${n.b}</p></div>`;
+  nl.appendChild(el);
+});
+
+/* ---------------- Vegetarian food + fuel, by day ---------------- */
+const FOOD = [
+  {day:1, t:"LA → Wuksachi Lodge", b:"<b>Lunch:</b> Punjabi Dhaba, Bakersfield — North Indian veg (thali, chana, samosas), already the pinned Day 1 lunch stop. <b>Dinner:</b> The Peaks Restaurant at Wuksachi Lodge, with vegetarian mains. Load the cooler at <b>Costco, Visalia</b> (pinned) and grab trail snacks at <b>Lodgepole Market</b> in Sequoia."},
+  {day:2, t:"Kings Canyon", b:"<b>Breakfast:</b> The Peaks, Wuksachi. <b>Lunch:</b> Grant Grove Restaurant near the start of the byway (veg options) — or carry a picnic for Cedar Grove and Road's End. <b>Dinner:</b> back at The Peaks, or the casual Wuksachi Pizza Deck; call ahead for veg."},
+  {day:3, t:"Wuksachi → Yosemite → Mammoth", b:"<b>Breakfast:</b> The Peaks before the long drive. <b>Lunch:</b> Curry Village / Base Camp Eatery in Yosemite Valley (pinned) — pizza, veg bowls, salads. <b>Dinner:</b> Elixir Superfood & Juice, Mammoth — veg-forward bowls and juices. Stock up at <b>Vons</b> (Old Mammoth Rd) for the next two days."},
+  {day:4, t:"Mammoth Lakes", b:"After the 5:30 AM sunrise loop, <b>breakfast:</b> Elixir Superfood & Juice. <b>Lunch:</b> the café atop Mammoth Mountain (11,053 ft), with veg options. <b>Dinner:</b> Lakefront Restaurant on Twin Lakes — a scenic sunset table; reserve ahead."},
+  {day:5, t:"June Lake & Mono Lake", b:"<b>Breakfast:</b> The Warming Hut — pancakes and omelets — before the loop; pack a picnic and snacks from <b>Vons, Mammoth</b>. <b>Dinner:</b> back in Mammoth at Gojira Ramen & Sushi (veg ramen and rolls available)."},
+  {day:6, t:"Eastern Sierra → Long Beach", b:"<b>Breakfast:</b> Erick Schat's Bakkerÿ in Bishop (pinned) — sheepherder bread, pastries, and veg sandwiches to go; grab road snacks at <b>Vons, Bishop</b>. Dining thins out across the Mojave, so carry food. You finish in <b>Long Beach</b>, loaded with veg-friendly and Indian options for dinner."},
+  {day:7, t:"LA — a great veg city", b:"Los Angeles is one of the best vegetarian cities in the country. Around Hollywood and Beverly Hills you'll find endless veg and Indian options; grab lunch near <b>Griffith</b> or on the <b>Santa Monica</b> waterfront. Strong Indian dining back in <b>Long Beach</b> for dinner."},
+  {day:8, t:"Malibu & the coast", b:"The <b>Malibu Hindu Temple</b> (pinned) runs a weekend vegetarian canteen — authentic South Indian food in a calm setting. Otherwise Malibu and <b>Venice Beach</b> have plenty of veg-friendly cafés along the way. Pack water for the beach stops."}
+];
+const FUEL = [
+  {day:1, t:"Visalia → Sequoia", b:"Fill at <b>Costco, Visalia</b> (pinned) — the last cheap, reliable gas before the mountains. There's <b>no fuel inside Sequoia</b>, so reach Wuksachi with at least half a tank."},
+  {day:2, t:"The Stony Creek top-off", b:"The only pumps between Sequoia and Kings Canyon are at <b>Stony Creek Village</b> (pinned), and they're seasonal — call ahead: (559) 565-3388. Top off on the way out; it's also your only backup on the way back."},
+  {day:3, t:"Fill before Tioga", b:"Before the Tioga crossing the only gas is <b>Crane Flat</b> and the <b>Tuolumne Meadows</b> store — in-park, pricey, seasonal. Fill at one. After the pass the first stations are <b>Lee Vining</b>, then <b>Mammoth Lakes</b>."},
+  {day:4, t:"Before the evening loop", b:"Top off in <b>Mammoth Lakes</b> (Main St / Old Mammoth Rd) before the Hot Creek → Convict Lake → Crowley evening loop — there's no fuel at the sites, and you circle back to town anyway."},
+  {day:5, t:"Mammoth before heading north", b:"Fill in <b>Mammoth Lakes</b> before the June Lake & Mono Lake loop. Small backups exist at <b>June Lake</b> village and <b>Lee Vining</b> by Mono Lake, but Mammoth is cheapest and most reliable."},
+  {day:6, t:"Fuel down US-395", b:"Fill in <b>Mammoth Lakes</b> before heading south. Reliable gas in <b>Bishop</b> and <b>Lone Pine</b>; after that, top off before the long Mojave stretch past <b>Red Rock Canyon</b>, where stations are sparse. Plenty of fuel once you reach <b>Lancaster</b> and the LA basin."},
+  {day:7, t:"City driving", b:"Gas is everywhere in LA — no range worries, just budget time for traffic. Top off in <b>Long Beach</b> before the loop if you like to start full."},
+  {day:8, t:"Before the coast", b:"Top off in <b>Long Beach</b> or <b>Santa Monica</b> before heading up the coast — fuel along <b>PCH in Malibu</b> is limited and pricey."}
+];
+const fl=document.getElementById('foodlist');
+FOOD.forEach(f=>{
+  const el=document.createElement('div'); el.className='note-item';
+  el.innerHTML=`<span class="ico" style="color:var(--pine)">${icons.veg}</span>
+    <div><h3><span class="day-tag tag-d${f.day}" style="margin-right:8px">Day ${f.day}</span>${f.t}</h3><p>${f.b}</p></div>`;
+  fl.appendChild(el);
+});
+// Mammoth restaurants — appended into the same vegetarian-eating card
+const RESTAURANTS = [
+  {name:"Skadi", cuisine:"Fine Dining · Nordic-European", b:"Mammoth's marquee fine-dining room — refined Nordic-European cooking. Reserve ahead for a special night; veg courses on request."},
+  {name:"Vulcania", cuisine:"Italian", b:"Upscale Italian-American in The Village — handmade pasta and wood-fired pizza, easily vegetarian."},
+  {name:"Lakefront Restaurant", cuisine:"American · Scenic", b:"Intimate Twin Lakes setting with mountain-and-lake views; veg mains available. The Day 4 dinner pick."},
+  {name:"Mammoth Tavern", cuisine:"American Gastropub", b:"Family-friendly gastropub — veggie burgers and meatless plates alongside the comfort food."},
+  {name:"Toomey's", cuisine:"New American", b:"Creative, casual mountain cooking with solid vegetarian choices, by the Village gondola."},
+  {name:"The Warming Hut", cuisine:"Breakfast & Brunch", b:"One of the most popular breakfasts in town — pancakes, omelets, veg scrambles. The Day 5 breakfast pick."},
+  {name:"Giovanni's", cuisine:"Pizza & Italian", b:"Longtime local favorite for pizza and pasta — plenty of vegetarian options for a casual family dinner."},
+  {name:"Emberz BBQ", cuisine:"Barbecue", b:"Texas-style barbecue; sides and a few meatless plates for the vegetarians in the group."},
+  {name:"Whitebark", cuisine:"Steakhouse · Contemporary American", b:"Upscale dining at The Westin — steaks and seafood, with vegetarian mains on the menu."},
+  {name:"Stove Restaurant", cuisine:"Classic American Breakfast", b:"Mammoth institution for big, classic breakfasts — omelets, pancakes, and veg scrambles."}
+];
+const rhead=document.createElement('div');
+rhead.style.cssText='border-top:1px solid var(--line);margin-top:8px;padding-top:16px';
+rhead.innerHTML=`<h3 style="font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:600;margin:0 0 2px">Mammoth Lakes restaurants</h3><p style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--granite);margin:0;letter-spacing:.03em">Your dining base for nights 3–8 — all vegetarian-friendly</p>`;
+fl.appendChild(rhead);
+RESTAURANTS.forEach(r=>{
+  const el=document.createElement('div'); el.className='note-item';
+  el.innerHTML=`<span class="ico" style="color:var(--pine)">${icons.veg}</span>
+    <div><h3>${r.name} <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:400;color:var(--granite);letter-spacing:.02em">· ${r.cuisine}</span></h3><p>${r.b}</p></div>`;
+  fl.appendChild(el);
+});
+const ufl=document.getElementById('fuellist');
+FUEL.forEach(f=>{
+  const el=document.createElement('div'); el.className='note-item';
+  el.innerHTML=`<span class="ico">${icons.fuel}</span>
+    <div><h3><span class="day-tag tag-d${f.day}" style="margin-right:8px">Day ${f.day}</span>${f.t}</h3><p>${f.b}</p></div>`;
+  ufl.appendChild(el);
+});
+
+/* ---------------- Elevation profile ---------------- */
+(function(){
+  const svg=document.getElementById('profile');
+  const W=1000,H=230,padT=26,padB=30,padL=4,padR=4;
+  const maxE=12000, plotH=H-padT-padB, plotW=W-padL-padR;
+  const n=SEQ.length;
+  const X=i=>padL + (i/(n-1))*plotW;
+  const Y=e=>padT + plotH - (e/maxE)*plotH;
+  let svgStr='';
+  // baseline (sea level)
+  svgStr+=`<line x1="0" y1="${Y(0)}" x2="${W}" y2="${Y(0)}" stroke="rgba(30,46,38,.18)" stroke-width="1"/>`;
+  svgStr+=`<text x="6" y="${Y(0)-5}" font-size="10" letter-spacing="1">SEA LEVEL</text>`;
+  // day-colored filled areas + lines
+  [1,2,3,4,5,6,7,8].forEach(dn=>{
+    const pts=SEQ.filter(s=>s.day===dn);
+    if(!pts.length) return;
+    const idxs=pts.map(s=>SEQ.indexOf(s));
+    let line=idxs.map((gi,k)=>`${k?'L':'M'}${X(gi).toFixed(1)} ${Y(pts[k].elev).toFixed(1)}`).join(' ');
+    const x0=X(idxs[0]), x1=X(idxs[idxs.length-1]);
+    const area=`M${x0.toFixed(1)} ${Y(0).toFixed(1)} `+idxs.map((gi,k)=>`L${X(gi).toFixed(1)} ${Y(pts[k].elev).toFixed(1)}`).join(' ')+` L${x1.toFixed(1)} ${Y(0).toFixed(1)} Z`;
+    svgStr+=`<path d="${area}" fill="${DAY_COLOR[dn]}" fill-opacity="0.13"/>`;
+    svgStr+=`<path d="${line}" fill="none" stroke="${DAY_COLOR[dn]}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`;
+    // day divider + label
+    const mid=(x0+x1)/2;
+    svgStr+=`<text class="dlabel" x="${mid.toFixed(0)}" y="16" font-size="11" text-anchor="middle">DAY ${dn}</text>`;
+    if(dn>1) svgStr+=`<line x1="${x0.toFixed(0)}" y1="22" x2="${x0.toFixed(0)}" y2="${H-padB}" stroke="rgba(30,46,38,.12)" stroke-width="1" stroke-dasharray="2 3"/>`;
+  });
+  // points
+  SEQ.forEach((s,i)=>{
+    svgStr+=`<circle class="pt" cx="${X(i).toFixed(1)}" cy="${Y(s.elev).toFixed(1)}" r="3" fill="#fff" stroke="${DAY_COLOR[s.day]}" stroke-width="1.6" data-id="${s.id}"><title>${s.name} — ${s.elev.toLocaleString()} ft</title></circle>`;
+  });
+  // peak label (Tioga Pass)
+  const peak=SEQ.reduce((a,b)=>b.elev>a.elev?b:a);
+  const pi=SEQ.indexOf(peak);
+  svgStr+=`<circle cx="${X(pi).toFixed(1)}" cy="${Y(peak.elev).toFixed(1)}" r="4.5" fill="${DAY_COLOR[peak.day]}" stroke="#fff" stroke-width="1.6"/>`;
+  svgStr+=`<text class="pk" x="${X(pi).toFixed(1)}" y="${(Y(peak.elev)-9).toFixed(1)}" font-size="10.5" text-anchor="middle">${peak.name.toUpperCase()} · ${peak.elev.toLocaleString()} FT</text>`;
+  svg.innerHTML=svgStr;
+  svg.querySelectorAll('.pt').forEach(c=>{
+    c.addEventListener('click',()=>{ highlight(c.dataset.id); document.getElementById('map').scrollIntoView({behavior:'smooth',block:'center'}); });
+  });
+})();
+
+/* ---------------- Search + day filter ---------------- */
+const q=document.getElementById('q'), clear=document.getElementById('clear'),
+      countEl=document.getElementById('count'), noresult=document.getElementById('noresult');
+let curDay='all';
+let currentVisibleCount=0;
+
+function apply(){
+  const term=q.value.trim().toLowerCase();
+  clear.style.display=term?'block':'none';
+  let visible=[];
+  DAYS.forEach(d=>{
+    const sec=document.querySelector(`.day[data-day="${d.n}"]`);
+    let shown=0;
+    sec.querySelectorAll('li.stop').forEach(li=>{
+      const matchTerm=!term || li.dataset.search.includes(term);
+      const matchDay=curDay==='all' || String(d.n)===curDay;
+      const ok=matchTerm&&matchDay;
+      li.classList.toggle('hidden',!ok);
+      if(ok){shown++; visible.push(li.id);}
+    });
+    sec.style.display=shown?'':'none';
+  });
+  // map markers
+  visible_set=new Set(visible);
+  currentVisibleCount=visible.length;
+  updateCount();
+  noresult.classList.toggle('show',visible.length===0);
+  if(visible.length) fitVisible(visible);
+}
+let visible_set=new Set();
+
+q.addEventListener('input',apply);
+clear.addEventListener('click',()=>{q.value='';q.focus();apply();});
+document.querySelectorAll('.chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    curDay=c.dataset.day;
+    document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed', x===c?'true':'false'));
+    apply();
+  });
+});
+
+/* initial */
+apply();
+</script>
+<script>
+/* ---- Add-to-Home-Screen: draw the trip emblem on a canvas and inject the
+        icon links + a web-app manifest as inline data URIs (no extra files). ---- */
+(function(){
+  function makeIcon(size){
+    const c=document.createElement('canvas'); c.width=size; c.height=size;
+    const x=c.getContext('2d'); if(!x) return null; const s=size/512;
+    const tri=(p,color)=>{x.fillStyle=color;x.beginPath();x.moveTo(p[0]*s,p[1]*s);for(let i=2;i<p.length;i+=2)x.lineTo(p[i]*s,p[i+1]*s);x.closePath();x.fill();};
+    const g=x.createLinearGradient(0,0,0,size);
+    g.addColorStop(0,'#C2693A'); g.addColorStop(.45,'#E6A94E'); g.addColorStop(1,'#EFC067');
+    x.fillStyle=g; x.fillRect(0,0,size,size);
+    x.fillStyle='rgba(246,227,161,.55)'; x.beginPath(); x.arc(348*s,178*s,118*s,0,7); x.fill();
+    x.fillStyle='#F6E3A1'; x.beginPath(); x.arc(348*s,178*s,80*s,0,7); x.fill();
+    tri([-40,422,150,250,340,422],'#1C7C8C');
+    tri([260,422,430,278,600,422],'#2F7E8A');
+    tri([150,250,132,282,172,282],'#EDE7D2');
+    tri([-60,512,180,300,430,512],'#2F5A42');
+    tri([300,512,470,330,660,512],'#234835');
+    tri([180,300,156,338,208,338],'#F2EEDD');
+    tri([470,330,448,366,496,366],'#F2EEDD');
+    return c.toDataURL('image/png');
+  }
+  const big=makeIcon(512); if(!big) return;
+  const small=makeIcon(192);
+  const add=(rel,attrs)=>{const l=document.createElement('link');l.rel=rel;for(const k in attrs)l.setAttribute(k,attrs[k]);document.head.appendChild(l);};
+  add('apple-touch-icon',{href:big});
+  add('icon',{type:'image/png',sizes:'512x512',href:big});
+  const manifest={
+    name:'California 2026', short_name:'California 2026',
+    start_url:'.', scope:'.', display:'standalone',
+    background_color:'#EEEADC', theme_color:'#2F5A42',
+    icons:[
+      {src:small,sizes:'192x192',type:'image/png',purpose:'any maskable'},
+      {src:big,sizes:'512x512',type:'image/png',purpose:'any maskable'}
+    ]
+  };
+  add('manifest',{href:'data:application/manifest+json;charset=utf-8,'+encodeURIComponent(JSON.stringify(manifest))});
+})();
+</script>
+</body>
+</html>
